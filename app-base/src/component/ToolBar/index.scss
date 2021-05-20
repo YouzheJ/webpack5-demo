@@ -1,0 +1,13 @@
+.tool-bar {
+  width: 120px;
+  height: 100%;
+  border-radius: 10px;
+  padding: 24px 0;
+  box-shadow: 0 0 10px 0 #d9d9d9;
+
+  &__item {
+    text-align: center;
+    margin-bottom: 24px;
+    cursor: pointer;
+  }
+}
