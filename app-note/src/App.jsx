@@ -6,6 +6,8 @@ import ModelCard from './component/ModelCard';
 import DialogForm from './component/DialogForm';
 import './app.scss';
 
+const CardContextProvider = React.createContext({});
+
 const App = () => {
   const [cardInfo, setCardInfo] = useState({});
   useEffect(() => {
@@ -33,7 +35,7 @@ const App = () => {
 
         <div className="card-wrapper">
           context:
-          <ContextCard>
+          <ContextCard CardContextProvider={CardContextProvider}>
             <div>tool</div>
           </ContextCard>
         </div>
