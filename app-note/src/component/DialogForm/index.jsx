@@ -18,7 +18,7 @@ const tailLayout = {
 const DialogForm = ({ init, onSubmit }) => {
   const [form] = Form.useForm();
   const onFinish = (values) => {
-    console.log('Success:', values);
+    // console.log('Success:', values);
     typeof onSubmit === 'function' && onSubmit(values);
     
     model.setInfo(values);

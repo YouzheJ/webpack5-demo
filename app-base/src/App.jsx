@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CardList from './component/CardList';
 import ToolBar from './component/ToolBar';
-// const RemoteCard = React.lazy(() => import("app-note/Card"));
 import './App.scss';
 
 const App = () => {
+  const [cardInfo, setCardInfo] = useState({});
   const onSubmit = (type, data) => {
-    console.log(type, data)
+    setCardInfo(data);
   }
 
   return (
     <div className="app-wrapper">
       <div className="app-content">
-        <CardList />
+        <CardList info={cardInfo} updateInfo={setCardInfo} />
       </div>
       <div className="app-bar">
         <ToolBar onSubmit={onSubmit} />

@@ -1,0 +1,8 @@
+.card {
+  position: relative;
+  &__tool {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

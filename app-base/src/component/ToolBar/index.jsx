@@ -14,8 +14,7 @@ const ToolBar = ({ onSubmit }) => {
   };
 
   const handleOk = (data) => {
-    console.log(data);
-    typeof onSubmit === 'function' && onSubmit(currentType, 'test');
+    typeof onSubmit === 'function' && onSubmit(currentType, data);
     setIsModalVisible(false);
     setCurrentType('');
   };

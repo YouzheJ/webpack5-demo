@@ -1,23 +1,54 @@
 import React, { Suspense } from 'react';
 import { Timeline } from 'antd';
 import CardTool from '../CardTool';
-const RemoteNoteCard = React.lazy(() => import('app-note/Card'));
+import { CardContextProvider } from '../../lib/CardContextProvider';
 import './index.scss';
 
-const CardList = () => {
-  const handleToolClick = (toolType, cardType) => {
-    console.log(toolType, cardType);
-    if (cardType === 'custom') {
-      if (toolType === 'delete') {
-        import('app-note/model').then(({ default: RemoteNoteModel }) => {
-          console.log(RemoteNoteModel);
-          RemoteNoteModel.setInfo({
-            title: '',
-            type: '',
-            content: ''
-          });
-        });
-      }
+// react组件需要import()引入
+const RemoteNotePropsCard = React.lazy(() => import('app-note/PropsCard'));
+const RemoteNoteContextCard = React.lazy(() => import('app-note/ContextCard'));
+const RemoteNoteReduxCard = React.lazy(() => import('app-note/ReduxCard'));
+const RemoteNoteModelCard = React.lazy(() => import('app-note/ModelCard'));
+
+// 直接引入即可
+import RemoteNoteModel from 'app-note/model';
+
+console.log(RemoteNoteModel)
+
+const CardList = ({ info, updateInfo }) => {
+  const handleToolClick = (cardType, toolType) => {
+    switch (cardType) {
+      case 'props': handlePropsCard(toolType); break;
+      case 'useContext': handleContextCard(toolType); break;
+      case 'redux': handleReduxCard(toolType); break;
+      case 'customModel': handleModelCard(toolType); break;
+    }
+  }
+
+  // 重置数据
+  const getResetInfo = () => ({
+    title: '',
+    type: '',
+    content: ''
+  });
+
+  const handlePropsCard = (toolType) => {
+    if (toolType === 'delete') {
+      typeof updateInfo === 'function' && updateInfo(getResetInfo());
+    }
+  }
+
+  const handleContextCard = (toolType) => {
+    if (toolType === 'delete') {
+      typeof updateInfo === 'function' && updateInfo(getResetInfo());
+    }
+  }
+
+  const handleReduxCard = () => {}
+
+  const handleModelCard = (toolType) => {
+    if (toolType === 'delete') {
+      RemoteNoteModel.setInfo(getResetInfo());
     }
   }
 
@@ -26,29 +57,31 @@ const CardList = () => {
       <div className="timeline__time">11:00 props</div>
       <div className="timeline__container">
         <Suspense fallback="Loading...">
-          <RemoteNoteCard>
-            <CardTool onClick={(type) => handleToolClick(type, 'props')} />
-          </RemoteNoteCard>
+          <RemoteNotePropsCard info={info}>
+            <CardTool onClick={(type) => handleToolClick('props', type)} />
+          </RemoteNotePropsCard>
         </Suspense>
       </div>
     </Timeline.Item>
     <Timeline.Item>
       <div className="timeline__time">9:00 useContext</div>
       <div className="timeline__container">
-        <Suspense fallback="Loading...">
-          <RemoteNoteCard>
-            <CardTool onClick={(type) => handleToolClick(type, 'useContext')} />
-          </RemoteNoteCard>
-        </Suspense>
+        <CardContextProvider.Provider value={info}>
+          <Suspense fallback="Loading...">
+            <RemoteNoteContextCard CardContextProvider={CardContextProvider}>
+              <CardTool onClick={(type) => handleToolClick('useContext', type)} />
+            </RemoteNoteContextCard>
+          </Suspense>
+        </CardContextProvider.Provider>
       </div>
     </Timeline.Item>
     <Timeline.Item>
       <div className="timeline__time">9:00 redux</div>
       <div className="timeline__container">
         <Suspense fallback="Loading...">
-          <RemoteNoteCard>
-            <CardTool onClick={(type) => handleToolClick(type, 'redux')} />
-          </RemoteNoteCard>
+          <RemoteNoteReduxCard>
+            <CardTool onClick={(type) => handleToolClick('redux', type)} />
+          </RemoteNoteReduxCard>
         </Suspense>
       </div>
     </Timeline.Item>
@@ -56,9 +89,9 @@ const CardList = () => {
       <div className="timeline__time">9:00 custom model</div>
       <div className="timeline__container">
         <Suspense fallback="Loading...">
-          <RemoteNoteCard>
-            <CardTool onClick={(type) => handleToolClick(type, 'custom')} />
-          </RemoteNoteCard>
+          <RemoteNoteModelCard>
+            <CardTool onClick={(type) => handleToolClick('customModel', type)} />
+          </RemoteNoteModelCard>
         </Suspense>
       </div>
     </Timeline.Item>
