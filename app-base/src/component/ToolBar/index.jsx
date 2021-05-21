@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { Modal } from 'antd';
 import { CalendarFilled } from '@ant-design/icons';
+const RemoteNoteForm = React.lazy(() => import('app-note/Form'));
 import './index.scss';
 
 const ToolBar = ({ onSubmit }) => {
@@ -12,7 +13,8 @@ const ToolBar = ({ onSubmit }) => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
+  const handleOk = (data) => {
+    console.log(data);
     typeof onSubmit === 'function' && onSubmit(currentType, 'test');
     setIsModalVisible(false);
     setCurrentType('');
@@ -32,10 +34,10 @@ const ToolBar = ({ onSubmit }) => {
       <div className="tool-bar__item-text">task</div>
     </div>
 
-    <Modal title={currentType} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <div>
-          content
-        </div>
+    <Modal title={currentType} visible={isModalVisible} footer={null} onCancel={handleCancel}>
+        <Suspense fallback="Loading...">
+          <RemoteNoteForm onSubmit={handleOk} />
+        </Suspense>
     </Modal>
   </div>
 }

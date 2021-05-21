@@ -1,0 +1,9 @@
+.card-tool {
+  // width: 150px;
+  user-select: none;
+  &__item {
+    display: inline-block;
+    margin-left: 12px;
+    cursor: pointer;
+  }
+}
