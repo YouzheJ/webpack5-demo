@@ -41,11 +41,7 @@ module.exports = {
       },
       exposes: {
         "./PropsCard": path.resolve(__dirname, '../src/component/PropsCard'),
-        "./ContextCard": path.resolve(__dirname, '../src/component/ContextCard'),
-        "./ReduxCard": path.resolve(__dirname, '../src/component/ReduxCard'),
-        "./ModelCard": path.resolve(__dirname, '../src/component/ModelCard'),
         "./Form": path.resolve(__dirname, '../src/component/DialogForm'),
-        "./model": path.resolve(__dirname, '../src/model'),
       },
       shared: {
         react: { singleton: true, eager: true },
