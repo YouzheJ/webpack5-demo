@@ -1,19 +1,19 @@
 import React, { Suspense } from 'react';
 import { Timeline } from 'antd';
 import CardTool from '../CardTool';
+import { store } from '../../store';
 import { CardContextProvider } from '../../lib/CardContextProvider';
 import './index.scss';
 
 // react组件需要import()引入
 const RemoteNotePropsCard = React.lazy(() => import('app-note/PropsCard'));
 const RemoteNoteContextCard = React.lazy(() => import('app-note/ContextCard'));
-const RemoteNoteReduxCard = React.lazy(() => import('app-note/ReduxCard'));
+// const RemoteNoteReduxCard = React.lazy(() => import('app-note/ReduxCard'));
 const RemoteNoteModelCard = React.lazy(() => import('app-note/ModelCard'));
+const RemoteTaskPropsCard = React.lazy(() => import('app-task/PropsCardWrapper'));
 
 // 直接引入即可
 import RemoteNoteModel from 'app-note/model';
-
-console.log(RemoteNoteModel)
 
 const CardList = ({ info, updateInfo }) => {
   const handleToolClick = (cardType, toolType) => {
@@ -76,22 +76,23 @@ const CardList = ({ info, updateInfo }) => {
       </div>
     </Timeline.Item>
     <Timeline.Item>
-      <div className="timeline__time">9:00 redux</div>
-      <div className="timeline__container">
-        <Suspense fallback="Loading...">
-          <RemoteNoteReduxCard>
-            <CardTool onClick={(type) => handleToolClick('redux', type)} />
-          </RemoteNoteReduxCard>
-        </Suspense>
-      </div>
-    </Timeline.Item>
-    <Timeline.Item>
       <div className="timeline__time">9:00 custom model</div>
       <div className="timeline__container">
         <Suspense fallback="Loading...">
           <RemoteNoteModelCard>
             <CardTool onClick={(type) => handleToolClick('customModel', type)} />
           </RemoteNoteModelCard>
+        </Suspense>
+      </div>
+    </Timeline.Item>
+
+    <Timeline.Item>
+      <div className="timeline__time">11:00 task card redux</div>
+      <div className="timeline__container">
+        <Suspense fallback="Loading...">
+          <RemoteTaskPropsCard store={store}>
+            <CardTool onClick={(type) => handleToolClick('props', type)} />
+          </RemoteTaskPropsCard>
         </Suspense>
       </div>
     </Timeline.Item>

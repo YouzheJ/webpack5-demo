@@ -1,5 +1,7 @@
 import { Form, Input, Button } from 'antd';
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateTaskInfoAction } from '../../store/reducer';
 import './index.scss';
 
 const layout = {
@@ -15,10 +17,13 @@ const tailLayout = {
 };
 
 const DialogForm = ({ init, onSubmit }) => {
+  const dispatch = useDispatch();
+
   const [form] = Form.useForm();
   const onFinish = (values) => {
     // console.log('Success:', values);
     typeof onSubmit === 'function' && onSubmit(values);
+    dispatch(updateTaskInfoAction(values));
     
     form.resetFields();
   };

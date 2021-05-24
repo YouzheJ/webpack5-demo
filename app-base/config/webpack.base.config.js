@@ -2,8 +2,10 @@ const path = require('path');
 const packageJson = require('../package.json');
 const { ModuleFederationPlugin } = require("webpack").container;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const deps = packageJson.dependencies;
 
-const port = 8081;
+const appNotePort = 8081;
+const appTaskPort = 8082;
 const getMFName = name => name.replace(/-/g, '_');
 const mfName = getMFName(packageJson.name);
 
@@ -37,12 +39,17 @@ module.exports = {
       // library: { type: "var", name: mfName },
       filename: "remoteEntry.js",
       remotes: {
-        'app-note': `app_note@//localhost:${port}/remoteEntry.js`,
+        'app-note': `app_note@//localhost:${appNotePort}/remoteEntry.js`,
+        'app-task': `app_task@//localhost:${appTaskPort}/remoteEntry.js`,
       },
       exposes: {
         // './CardContextProvider': path.resolve(__dirname, '../src/lib/CardContextProvider.js')
       },
-      shared: { react: { singleton: true, eager: true }, "react-dom": { singleton: true, eager: true } },
+      shared: { 
+        ...deps,
+        react: { singleton: true, eager: true }, 
+        "react-dom": { singleton: true, eager: true } 
+      },
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',  // 输出文件的文件名称或者文件地址/文件名称

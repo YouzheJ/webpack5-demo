@@ -2,6 +2,7 @@ const path = require('path');
 const packageJson = require('../package.json');
 const { ModuleFederationPlugin } = require("webpack").container;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const deps = packageJson.dependencies;
 
 const getMFName = name => name.replace(/-/g, '_');
 const mfName = getMFName(packageJson.name);
@@ -41,9 +42,11 @@ module.exports = {
       },
       exposes: {
         "./PropsCard": path.resolve(__dirname, '../src/component/PropsCard'),
+        "./PropsCardWrapper": path.resolve(__dirname, '../src/component/PropsCardWrapper'),
         "./Form": path.resolve(__dirname, '../src/component/DialogForm'),
       },
       shared: {
+        ...deps,
         react: { singleton: true, eager: true },
         lodash: { singleton: true, eager: true },
         "react-dom": { singleton: true, eager: true },

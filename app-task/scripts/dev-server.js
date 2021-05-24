@@ -5,7 +5,7 @@ const WebpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('../config/webpack.dev.config.js');
 
 const compiler = Webpack(webpackConfig);
-const port = 8081;
+const port = 8082;
 const host = '127.0.0.1';
 const devServerOptions = {
   ...webpackConfig.devServer,

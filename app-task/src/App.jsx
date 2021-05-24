@@ -1,35 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropsCard from './component/PropsCard';
 import DialogForm from './component/DialogForm';
 import './app.scss';
 
 const App = () => {
-  const [cardInfo, setCardInfo] = useState({});
-  useEffect(() => {
-    setCardInfo({
-      title: '',
-      type: '',
-      content: ''
-    });
-  }, []);
-
-  const handleSubmit = (data) => {
-    setCardInfo(data);
-  }
 
   return (
     <div className="list">
-      note
+      task
       <div>
         <div className="card-wrapper">
           props:
-          <PropsCard info={cardInfo}>
+          <PropsCard>
             <div>tool</div>
           </PropsCard>
         </div>
       </div>
 
-      <DialogForm onSubmit={handleSubmit} />
+      <DialogForm />
     </div>
   );
 }
