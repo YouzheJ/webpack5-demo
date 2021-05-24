@@ -1,6 +1,8 @@
 const initialState = {
-  taskList: []
+  logList: []
   // {
+  //   _id: '',
+  //   _time: '',
   //   name: '',
   //   time: '',
   //   detail: ''
@@ -18,7 +20,7 @@ const reducer = (state = initialState, action) => {
     case ADD_TASK_INFO: {
       return {
         ...state,
-        taskList: [...state.taskList, action.payload]
+        logList: [...state.logList, action.payload]
       };
     }
   }

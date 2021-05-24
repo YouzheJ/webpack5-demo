@@ -1,11 +1,15 @@
 import React, { useState, Suspense } from 'react';
 import { Modal } from 'antd';
+import { useDispatch } from 'react-redux';
+import { addTaskInfoAction } from '../../store/reducer';
 import { CalendarFilled } from '@ant-design/icons';
-const RemoteNoteForm = React.lazy(() => import('app-note/Form'));
-const RemoteTaskForm = React.lazy(() => import('app-task/Form'));
 import './index.scss';
 
+const RemoteNoteForm = React.lazy(() => import('app-note/Form'));
+const RemoteTaskForm = React.lazy(() => import('app-task/Form'));
+
 const ToolBar = ({ onSubmit }) => {
+  const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentType, setCurrentType] = useState('');
   
@@ -16,6 +20,14 @@ const ToolBar = ({ onSubmit }) => {
 
   const handleOk = (data) => {
     typeof onSubmit === 'function' && onSubmit(currentType, data);
+    // 创建任务时生成一个日志卡片
+      dispatch(addTaskInfoAction({
+        _id: Math.random(),
+        _time: new Date().toLocaleString(),
+        title: data.name || data.title,
+        type: currentType,
+        content: `${data.detail || data.content || ''} -- ${data.time || data.type || ''}`,
+      }));
     setIsModalVisible(false);
     setCurrentType('');
   };

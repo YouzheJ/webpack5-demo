@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { Timeline } from 'antd';
 import CardTool from '../CardTool';
 import { store } from '../../store';
+import { useSelector } from 'react-redux';
 import { CardContextProvider } from '../../lib/CardContextProvider';
 import './index.scss';
 
@@ -10,12 +11,14 @@ const RemoteNotePropsCard = React.lazy(() => import('app-note/PropsCard'));
 const RemoteNoteContextCard = React.lazy(() => import('app-note/ContextCard'));
 // const RemoteNoteReduxCard = React.lazy(() => import('app-note/ReduxCard'));
 const RemoteNoteModelCard = React.lazy(() => import('app-note/ModelCard'));
-const RemoteTaskPropsCard = React.lazy(() => import('app-task/PropsCardWrapper'));
+const RemoteTaskStoreCard = React.lazy(() => import('app-task/PropsCardWrapper'));
 
 // 直接引入即可
 import RemoteNoteModel from 'app-note/model';
 
 const CardList = ({ info, updateInfo }) => {
+  const logList = useSelector(state => state.base.logList);
+
   const handleToolClick = (cardType, toolType) => {
     switch (cardType) {
       case 'props': handlePropsCard(toolType); break;
@@ -54,7 +57,7 @@ const CardList = ({ info, updateInfo }) => {
 
   return <Timeline>
     <Timeline.Item>
-      <div className="timeline__time">11:00 props</div>
+      <div className="timeline__time">props</div>
       <div className="timeline__container">
         <Suspense fallback="Loading...">
           <RemoteNotePropsCard info={info}>
@@ -64,7 +67,7 @@ const CardList = ({ info, updateInfo }) => {
       </div>
     </Timeline.Item>
     <Timeline.Item>
-      <div className="timeline__time">9:00 useContext</div>
+      <div className="timeline__time">useContext</div>
       <div className="timeline__container">
         <CardContextProvider.Provider value={info}>
           <Suspense fallback="Loading...">
@@ -76,7 +79,7 @@ const CardList = ({ info, updateInfo }) => {
       </div>
     </Timeline.Item>
     <Timeline.Item>
-      <div className="timeline__time">9:00 custom model</div>
+      <div className="timeline__time">custom model</div>
       <div className="timeline__container">
         <Suspense fallback="Loading...">
           <RemoteNoteModelCard>
@@ -87,15 +90,26 @@ const CardList = ({ info, updateInfo }) => {
     </Timeline.Item>
 
     <Timeline.Item>
-      <div className="timeline__time">11:00 task card redux</div>
+      <div className="timeline__time">task card redux</div>
       <div className="timeline__container">
         <Suspense fallback="Loading...">
-          <RemoteTaskPropsCard store={store}>
+          <RemoteTaskStoreCard store={store}>
             <CardTool onClick={(type) => handleToolClick('props', type)} />
-          </RemoteTaskPropsCard>
+          </RemoteTaskStoreCard>
         </Suspense>
       </div>
     </Timeline.Item>
+
+    {
+      logList.map(d => <Timeline.Item key={d._id}>
+        <div className="timeline__time">{d._time} 创建日志</div>
+        <div className="timeline__container logger">
+          <Suspense fallback="Loading...">
+            <RemoteNotePropsCard info={d}></RemoteNotePropsCard>
+          </Suspense>
+        </div>
+      </Timeline.Item>)
+    }
   </Timeline>
 }
 

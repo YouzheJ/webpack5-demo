@@ -8,5 +8,9 @@
     border-radius: 5px;
     background: #f3f3f3;
     margin-top: 16px;
+    &.logger {
+      background: #fff;
+      border: 1px solid #aaa;
+    }
   }
 }
